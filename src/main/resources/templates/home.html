@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+<div class="container">
+    <div th:replace="header"></div>
+
+    <div class="content">
+        <!-- 메인 뉴스 -->
+        <div class="section-header">
+            <span class="section-icon">🔥</span>
+            <span class="section-title">주요 뉴스</span>
+        </div>
+        <div class="main-news">
+            <div>
+                <img th:src="@{/images/test.jpg}" alt="뉴스 이미지" class="news-image">
+            </div>
+            <div class="news-content">
+                <div class="news-source">
+                    <div class="source-logo"></div>
+                    <span>MBC 뉴스</span>
+                </div>
+                <div class="news-title">
+                    북한, ICBM 포함 3발 발사..위협 대응 시작
+                </div>
+                <div class="news-meta">
+                    <div class="news-actions">
+                        <div class="action-icon">📋</div>
+                        <div class="action-icon">⋮</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 필터 섹션 -->
+        <div class="filter-section">
+            <div class="filter-row">
+                <span class="filter-label">분류</span>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">전체</button>
+                    <button class="filter-btn">국내</button>
+                    <button class="filter-btn">해외</button>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">카테고리</span>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">전체</button>
+                    <button class="filter-btn">경제</button>
+                    <button class="filter-btn">IT</button>
+                    <button class="filter-btn">정치</button>
+                    <button class="filter-btn">사회</button>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">정렬</span>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">인기순</button>
+                    <button class="filter-btn">최신순</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 인기 뉴스 섹션 -->
+        <div class="section-header">
+            <span class="section-icon">📈</span>
+            <span class="section-title">인기 뉴스</span>
+        </div>
+        <div class="section-subtitle">오늘의 경제 분야에서 인기 뉴스를 확인해 보세요.</div>
+
+        <div class="small-news-item">
+            <img class="small-news-image" th:src="@{/images/test.jpg}" alt="뉴스 이미지">
+            <div class="small-news-content">
+                <div>
+                    <span class="small-news-category">조선비즈</span>
+                    <div class="small-news-title">
+                        '창업 70주년' 삼성, 초격차 혁신 발판
+                    </div>
+                </div>
+                <div class="small-news-meta">
+                    <span>조선비즈 · 2023. 4. 6.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 카테고리별 뉴스 섹션 -->
+        <div class="section-header">
+            <span class="section-icon">📰</span>
+            <span class="section-title">카테고리별 뉴스</span>
+        </div>
+        <div class="section-subtitle">오늘의 카테고리별 뉴스를 확인해 보세요.</div>
+
+        <div class="small-news-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect fill='%2300d2ff' width='120' height='120'/%3E%3C/svg%3E" alt="뉴스" class="small-news-image">
+            <div class="small-news-content">
+                <div>
+                    <span class="small-news-category">머니투데이</span>
+                    <div class="small-news-title">
+                        농협 수협 진북은행 "토론증권 생태계 구축" 목적다
+                    </div>
+                </div>
+                <div class="small-news-meta">
+                    <span>머니투데이 · 2023. 4. 6.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

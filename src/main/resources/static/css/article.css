@@ -1,0 +1,38 @@
+/* 필터 섹션 */
+.navbar {
+    background: var(--color-bg-white);
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    width: 100%;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px 16px;
+    color: var(--color-text-gray);
+    font-size: var(--font-base);
+    font-weight: var(--font-weight-sm);
+    transition: background 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.nav-link:hover {
+    color: var(--color-primary);
+}
+
+.nav-link.active {
+    color: var(--color-text-blue);
+    border-bottom: 3px solid white;
+}

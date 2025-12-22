@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/login")
-public class LoginPageController {
+public class LoginController {
     @Value("${kakao.client-id}")
     private String clientId;
 
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
 
-    @GetMapping("/page")
+    @GetMapping
     public String loginPage(Model model){
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+clientId+"&redirect_uri="+redirectUri;
         model.addAttribute("kakao", url);
