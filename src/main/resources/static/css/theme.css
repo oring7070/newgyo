@@ -1,0 +1,37 @@
+:root {
+    /* 브랜드 컬러 */
+    --color-primary: #7297f4;
+    --color-secondary: #e8f2ff;
+
+    /* 텍스트 컬러 */
+    --color-text-blue: #1e6fff;
+    --color-text-black: #2b2b2b;
+    --color-text-gray: #4c4c4c;
+    --color-text-lightgray: #8c8c8c;
+    --color-text-white: #ffffff;
+
+    /* 배경 컬러 */
+    --color-bg-white: #ffffff;
+    --color-bg-gray: #f8f8f8;
+    --color-bg-lightgray: #c6c6c6;
+
+    /* 보더 반경 */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+    --radius-full: 50%;
+
+    /* 폰트 크기 */
+    --font-xs: 11px;
+    --font-sm: 13px;
+    --font-base: 14px;
+    --font-md: 15px;
+    --font-lg: 18px;
+    --font-xl: 28px;
+
+    /* 폰트 굵기 */
+    --font-weight-sm: 500;
+    --font-weight-base: 700;
+    --font-weight-md: 900;
+}
