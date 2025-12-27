@@ -1,5 +1,6 @@
 package kr.co.newgyo.user.service;
 
+import kr.co.newgyo.jwt.JwtUtil;
 import kr.co.newgyo.user.dto.KakaoTokenResponse;
 import kr.co.newgyo.user.dto.KakaoUserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,11 @@ public class KakaoService {
 
     private final WebClient webClient;
 
-    public KakaoService(WebClient.Builder webClientBuilder){
+    private final JwtUtil  jwtUtil;
+
+    public KakaoService(WebClient.Builder webClientBuilder, JwtUtil jwtUtil) {
         this.webClient = webClientBuilder.build();
+        this.jwtUtil = jwtUtil;
     }
 
     public String getAccessTokenFromKakao(String code){
@@ -67,6 +71,18 @@ public class KakaoService {
         log.info("[User Email] {}", response.getEmail());
         log.info("[User Nickname] {}", response.getNickname());
 
+
+
         return response;
     }
+
+
+    public String creatJWTtoken(KakaoUserInfo response){
+        // 우리서버에 이메일과 같은지 비교후 jwt토큰 발행하는 매서드 생성
+
+        // jwt토큰 생성
+        return jwtUtil.createToken(response.getEmail(),"ADMIN");
+    }
+
+
 }
