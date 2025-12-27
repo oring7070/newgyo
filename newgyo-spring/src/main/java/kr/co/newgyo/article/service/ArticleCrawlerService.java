@@ -1,6 +1,7 @@
 package kr.co.newgyo.article.service;
 
 import kr.co.newgyo.article.dto.ArticleListResponse;
+import kr.co.newgyo.article.dto.HealthResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -33,6 +34,22 @@ public class ArticleCrawlerService {
         }catch (Exception e){
             log.error("[크롤링 API 오류]", e);
             return null;
+        }
+    }
+
+    public boolean isHealth() {
+        try {
+            HealthResponse response = webClient.get()
+                    .uri("/api/health")
+                    .retrieve()
+                    .bodyToMono(HealthResponse.class)
+                    .block();
+
+            return response != null && "up".equals(response.getStatus());
+
+        } catch (Exception e) {
+            log.error("[파이썬 서버 헬스체크 오류]", e);
+            return false;
         }
     }
 }

@@ -20,14 +20,21 @@ public class ArticleService {
 
     private final ArticleCrawlerService articleCrawlerService;
 
-    @Scheduled(fixedDelay = 1 * 60 * 60 * 1000) // 1시간
+    @Scheduled(fixedDelay = 60 * 60 * 1000) // 1시간
     public void scheduledCrawler(){
         try {
+            if(!articleCrawlerService.isHealth()){
+                log.warn("[파이썬 서버 오류]");
+                return;
+            }
+
             ArticleListResponse listResponse = articleCrawlerService.getCrawler();
+
             if (listResponse == null || listResponse.getArticleListResponse() == null) {
                 log.warn("[크롤링 응답 비었음]");
                 return;
             }
+
             List<ArticleResponse> response = listResponse.getArticleListResponse();
 
             log.info("[article 수] {}", listResponse.getCount());
