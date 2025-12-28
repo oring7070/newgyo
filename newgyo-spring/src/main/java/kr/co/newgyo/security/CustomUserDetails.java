@@ -1,6 +1,6 @@
 package kr.co.newgyo.security;
 
-import kr.co.newgyo.user.entity.UserEntity;
+import kr.co.newgyo.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,10 +9,10 @@ import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-    private UserEntity userEntity;
+    private User user;
 
-    public CustomUserDetails(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public CustomUserDetails(User user) {
+        this.user = user;
     }
 
 
@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return userEntity.getRole();
+                return user.getRole();
             }
         });
         return collection;
@@ -31,12 +31,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userEntity.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userEntity.getUsername();
+        return user.getUsername();
     }
 
     @Override

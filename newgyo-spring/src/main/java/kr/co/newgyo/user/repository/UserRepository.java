@@ -1,12 +1,12 @@
 package kr.co.newgyo.user.repository;
 
 
-import kr.co.newgyo.user.entity.UserEntity;
+import kr.co.newgyo.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<UserEntity,Integer> {
+public interface UserRepository extends JpaRepository<User,Integer> {
 
     Boolean existsByUsername(String username);
 
-    UserEntity findByUsername(String username);
+    User findByUsername(String username);
 }

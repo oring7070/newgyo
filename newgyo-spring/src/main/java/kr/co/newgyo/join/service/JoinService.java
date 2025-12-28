@@ -1,7 +1,7 @@
 package kr.co.newgyo.join.service;
 
 import kr.co.newgyo.user.dto.UserDto;
-import kr.co.newgyo.user.entity.UserEntity;
+import kr.co.newgyo.user.entity.User;
 import kr.co.newgyo.user.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,12 @@ public class JoinService {
             return;
         }
 
-        UserEntity data = new UserEntity();
+        User user = new User(
+                username,
+                bCryptPasswordEncoder.encode(password),
+                "ADMIN"
+        );
 
-        data.setUsername(username);
-        data.setPassword(bCryptPasswordEncoder.encode(password));
-        data.setRole("ADMIN");
-
-        userRepository.save(data);
+        userRepository.save(user);
     }
-
 }
