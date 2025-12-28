@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 로그인 처리 중...</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f7f7f7;
+        }
+        .loader {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="loader">
+    <h2>로그인 처리 중입니다...</h2>
+    <p>잠시만 기다려주세요.</p>
+</div>
+
+<script th:inline="javascript">
+    // URL에서 code 파라미터 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    const token = /*[[${token}]]*/  "기본값";
+
+    if (error) {
+        alert('카카오 로그인 실패: ' + (urlParams.get('error_description') || error));
+        window.location.href = '/logins';  // 로그인 페이지로 이동
+        throw new Error('Kakao login error');
+    }
+
+    if (!code) {
+        alert('인가 코드가 없습니다.');
+        window.location.href = '/logins';
+        throw new Error('No code parameter');
+    }
+
+    // 토큰 저장
+    localStorage.setItem('Authorization', token);
+
+    fetch('/home', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,   // ← 여기서 헤더 포함!
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('홈 페이지 로드 실패: ' + response.status);
+            }
+            return response.text();  // HTML 텍스트로 받음
+        })
+        .then(html => {
+            // 현재 문서의 내용을 /home의 HTML로 완전히 교체 → 리다이렉트 효과
+            document.open();
+            document.write(html);
+            document.close();
+
+            // URL도 /home으로 변경 (뒤로가기 버튼 정상 동작)
+            window.history.pushState({}, 'Home', '/home');
+
+            console.log('Authorization 헤더 포함해서 /home으로 이동 완료');
+        })
+        .catch(err => {
+            console.error('홈 페이지 로드 실패:', err);
+            alert('홈 페이지로 이동할 수 없습니다.');
+            // 실패 시 일반 리다이렉트로 fallback
+            window.location.href = '/home';
+        });
+
+</script>
+</body>
+</html>
