@@ -90,8 +90,7 @@ public class WebSecurityConfig {
                                 "/css/**",
                                 "/login/kakao",
                                 "/kakao-callback.html",
-                                "/article/domestic",
-                                "/article/international"
+                                "/article/**"
                         ).permitAll()
                         // 🔐 보호할 API
                         .requestMatchers("/api/**").authenticated().anyRequest().denyAll()
@@ -102,7 +101,6 @@ public class WebSecurityConfig {
         http.addFilterBefore(new JWTFilter(jwtUtil,customUserDetailsService), LoginFilter.class);
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함)
         http.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }

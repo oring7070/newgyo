@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>articleDetaol</title>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" th:href="@{/css/articleDetail.css}">
+</head>
+<body>
+<div class="container">
+    <div th:replace="header"></div>
+    <div class="detail-card">
+
+        <!-- 제목 -->
+        <div class="section">
+<!--            <h1 class="title" th:text="${article.title}">서울 도심 속 숨겨진 카페 BEST 5</h1>-->
+        </div>
+
+        <!-- 이미지 -->
+        <div class="section image-section">
+            <div class="image-container">
+                <!-- 실제 사용할 때는 src 경로만 바꾸면 됩니다 -->
+<!--                <img th:src="${article.url}" alt="카페 인테리어 사진">-->
+            </div>
+        </div>
+
+        <!-- AI 요약 -->
+        <div class="section">
+            <h2 class="section-title">AI 요약</h2>
+            <div class="ai-summary">
+<!--                <p th:text="${article.summaryStatus}"></p>-->
+            </div>
+        </div>
+
+        <!-- 본문 글 -->
+        <div class="section">
+            <h2 class="section-title">상세 내용</h2>
+            <div class="content">
+<!--               <p th:text="${article.content}"></p>-->
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
