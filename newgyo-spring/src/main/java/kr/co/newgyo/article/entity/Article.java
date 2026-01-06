@@ -35,7 +35,7 @@ public class Article {
     private String url;
 
     @Enumerated(EnumType.STRING)
-    private SummaryStatus summaryStatus;
+    private SummaryStatus summaryStatus = SummaryStatus.READY;
 
     private String articleDate;
 

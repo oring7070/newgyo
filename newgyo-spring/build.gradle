@@ -7,6 +7,7 @@ plugins {
 group = 'kr.co'
 version = '0.0.1-SNAPSHOT'
 description = 'newgyo'
+def queryDslVersion = "7.0"
 
 java {
     toolchain {
@@ -49,6 +50,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:sockjs-client:1.5.1'
     implementation 'org.webjars:stomp-websocket:2.3.4'
+
+    // querydsl
+    implementation("io.github.openfeign.querydsl:querydsl-core:${queryDslVersion}")
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:$queryDslVersion")
+    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:$queryDslVersion:jpa")
 }
 
 tasks.named('test') {

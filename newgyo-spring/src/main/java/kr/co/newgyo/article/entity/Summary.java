@@ -1,10 +1,14 @@
 package kr.co.newgyo.article.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="summary")
 public class Summary {
     @Id
@@ -17,4 +21,10 @@ public class Summary {
 
     @Column(length = 500)
     private String summary;
+
+    @Builder
+    public Summary(Article article, String summary){
+        this.article = article;
+        this.summary = summary;
+    }
 }
