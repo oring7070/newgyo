@@ -7,6 +7,7 @@ plugins {
 group = 'kr.co'
 version = '0.0.1-SNAPSHOT'
 description = 'newgyo'
+def queryDslVersion = "7.0"
 
 java {
     toolchain {
@@ -47,6 +48,11 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // querydsl
+    implementation("io.github.openfeign.querydsl:querydsl-core:${queryDslVersion}")
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:$queryDslVersion")
+    annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:$queryDslVersion:jpa")
 }
 
 tasks.named('test') {
