@@ -2,6 +2,7 @@ package kr.co.newgyo.article.service;
 
 import kr.co.newgyo.article.dto.SummaryRequest;
 import kr.co.newgyo.article.dto.SummaryResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,14 +14,9 @@ import java.util.List;
  * */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ArticleSummaryService {
     private final WebClient webClient;
-
-    public ArticleSummaryService(WebClient.Builder webClientBuilder){
-            this.webClient = webClientBuilder
-                    .baseUrl("http://localhost:8000")
-                    .build();
-    }
 
     // AI 요약 요청
     public List<SummaryResponse> getSummary(List<SummaryRequest> summary){

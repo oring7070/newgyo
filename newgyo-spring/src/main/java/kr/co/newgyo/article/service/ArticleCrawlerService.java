@@ -2,6 +2,7 @@ package kr.co.newgyo.article.service;
 
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.HealthResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,14 +13,9 @@ import reactor.core.publisher.Mono;
  * */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ArticleCrawlerService {
     private final WebClient webClient;
-
-    public ArticleCrawlerService(WebClient.Builder webClientBuilder){
-        this.webClient = webClientBuilder
-                .baseUrl("http://localhost:8000")
-                .build();
-    }
 
     // 파이썬 서버 크롤링 요청
     public ArticleListResponse getCrawler(){
