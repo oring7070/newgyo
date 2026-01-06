@@ -83,14 +83,17 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                         // 🔓 HTML 페이지
                         .requestMatchers(
-                                "/home",
+                                "/home/**",
                                 "/loginPage",
                                 "/join-page",
                                 "/JS/**",
                                 "/css/**",
                                 "/login/kakao",
                                 "/kakao-callback.html",
-                                "/article/**"
+                                "/article/**",
+                                // 채팅 관련
+                                "/ws-chat/**",
+                                "/webjars/**"
                         ).permitAll()
                         // 🔐 보호할 API
                         .requestMatchers("/api/**").authenticated().anyRequest().denyAll()

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/chatIcon.css}">
+</head>
+<body>
+<!-- 챗봇 버튼 -->
+<div id="chatbot-button">
+    <!-- 간단한 채팅 아이콘 SVG -->
+    <svg viewBox="0 0 24 24">
+        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+    </svg>
+</div>
+
+<!-- 챗봇 모달 창 -->
+<div id="chatbot-modal">
+    <div class="chat-header">
+        챗봇 상담
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="chat-body" id="chatArea">
+        <!-- 여기에 메시지 추가될 곳 -->
+    </div>
+    <div class="chat-footer">
+        <input type="text" id="messageInput" placeholder="메시지를 입력하세요...">
+        <button onclick="send()">➤</button>
+    </div>
+</div>
+<script src="/JS/chatModal.js"></script>
+<script src="/JS/socket.js"></script>
+</body>
+</html>
