@@ -4,9 +4,13 @@ import kr.co.newgyo.article.dto.SummaryRequest;
 import kr.co.newgyo.article.dto.SummaryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -25,7 +29,14 @@ public class ArticleSummaryService {
                     .uri("/api/summary")
                     .bodyValue(summary)
                     .retrieve()
+                    .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, clientResponse -> {
+                        return Mono.error(new RuntimeException("429 Too Many Requests"));
+                    })
                     .bodyToFlux(SummaryResponse.class)
+                    .delaySubscription(Duration.ofSeconds(1))
+                    .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(2))
+                        .filter(throwable -> throwable instanceof RuntimeException &&
+                                throwable.getMessage().contains("429")))
                     .collectList()
                     .block();
 

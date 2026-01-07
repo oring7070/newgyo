@@ -44,7 +44,7 @@ public class ArticleService {
 //        crawler();
 
         // 요약
-        summary();
+//        summary();
     }
 
     public void crawler(){
@@ -72,14 +72,18 @@ public class ArticleService {
     }
 
     public void summary(){
-        // ready 데이터(id, content) 꺼내오기
-        List<SummaryRequest> requests = queryRepository.findSummary();
+        try {
+            // ready 데이터(id, content) 꺼내오기
+            List<SummaryRequest> requests = queryRepository.findSummary();
 
-        // getSummary에 보내기
-        List<SummaryResponse> responses = articleSummaryService.getSummary(requests);
+            // getSummary에 보내기
+            List<SummaryResponse> responses = articleSummaryService.getSummary(requests);
 
-        // 결과 반환 후 summary 테이블에 저장
-        createSummaries(responses);
+            // 결과 반환 후 summary 테이블에 저장
+            createSummaries(responses);
+        } catch (Exception e) {
+            log.error("[요약 오류]", e);
+        }
     }
 
     @Transactional
@@ -125,9 +129,7 @@ public class ArticleService {
 
         if(!summaries.isEmpty()){
             summaryRepository.saveAll(summaries);
-            log.info("[뉴스 요약 저장 완료] {} 건", summaries.size());
+            log.info("[뉴스 요약 완료] {} 건", summaries.size());
         }
-
-        log.info("###############");
     }
 }
