@@ -1,5 +1,6 @@
 package kr.co.newgyo.article.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;
@@ -119,12 +120,20 @@ public class ArticleService {
         List<Summary> summaries = new ArrayList<>();
         // ai 요약 데이터 디비 저장
         for(SummaryResponse data : responses){
+            // article 찾기
+            Article article = repository.findById(data.id()).orElseThrow(() -> new IllegalArgumentException("기사 없음"));
+
+            // 뉴스 요약
             Summary summary = Summary.builder()
-                    .article(repository.findById(data.id()).orElseThrow())
+                    .article(article)
                     .summary(data.summary())
                     .build();
 
             summaries.add(summary);
+
+            // 요약 상태 변경
+            article.updateSummaryStatus();
+            repository.save(article);
         }
 
         if(!summaries.isEmpty()){
