@@ -15,7 +15,7 @@ async def news_summary(requests: List[SummaryRequest]) -> List[SummaryResponse]:
                 model="gpt-4o-mini", 
                 messages=[
                     {"role": "system", "content": "너는 뉴스 요약을 잘하는 한국어 AI야. 주어진 기사의 핵심 내용만 간결하게 요약해줘."},
-                    {"role": "user", "content": f"다음 뉴스 기사를 100자 이내로 요약해줘:\n\n{req.content}"},
+                    {"role": "user", "content": f"다음 뉴스 기사를 핵심 쟁점 1개 중심으로 불필요한 배경 설명 없이 150자 이내 문장 잘림 없이 완결된 문장으로 요약해줘.:\n\n{req.content}"},
                 ],
                 max_tokens=50
             )

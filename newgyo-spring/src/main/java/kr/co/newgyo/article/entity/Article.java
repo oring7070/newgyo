@@ -48,4 +48,8 @@ public class Article {
         this.url = url;
         this.articleDate = articleDate;
     }
+
+    public void updateSummaryStatus() {
+        this.summaryStatus = SummaryStatus.COMPLETED;
+    }
 }
