@@ -15,7 +15,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 @Service
 public class KakaoService {
-
     @Value("${kakao.token-uri}")
     private String tokenUri;
 
@@ -37,6 +36,7 @@ public class KakaoService {
         this.jwtUtil = jwtUtil;
     }
 
+    // TODO : api로 분리
     public String getAccessTokenFromKakao(String code){
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "authorization_code");
@@ -71,11 +71,8 @@ public class KakaoService {
         log.info("[User Email] {}", response.getEmail());
         log.info("[User Nickname] {}", response.getNickname());
 
-
-
         return response;
     }
-
 
     public String creatJWTtoken(KakaoUserInfo response){
         // 우리서버에 이메일과 같은지 비교후 jwt토큰 발행하는 매서드 생성
@@ -83,6 +80,4 @@ public class KakaoService {
         // jwt토큰 생성
         return jwtUtil.createToken(response.getEmail(),"ADMIN");
     }
-
-
 }

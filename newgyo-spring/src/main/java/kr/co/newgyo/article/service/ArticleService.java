@@ -1,6 +1,8 @@
 package kr.co.newgyo.article.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.newgyo.client.CrawlerClient;
+import kr.co.newgyo.client.HealthCheckClient;
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;
 import kr.co.newgyo.article.entity.Article;
@@ -22,12 +24,13 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository repository;
 
-    private final ArticleCrawlerService articleCrawlerService;
+    private final HealthCheckClient healthCheckClient;
+    private final CrawlerClient crawlerClient;
 
     @Scheduled(fixedDelay = 60 * 60 * 1000) // 1시간
     public void scheduledCrawler() {
         // 파이썬 서버 헬스 체크
-        if (!articleCrawlerService.isHealth()) {
+        if (!healthCheckClient.isHealth()) {
             log.warn("[파이썬 서버 안 떠 있음 - 스킵]");
             return;
         }
@@ -39,7 +42,7 @@ public class ArticleService {
     public void crawler(){
         try {
             // 크롤링 데이터 목록 수신
-            ArticleListResponse listResponse = articleCrawlerService.getCrawler();
+            ArticleListResponse listResponse = crawlerClient.getCrawler();
 
             if (listResponse == null || listResponse.getArticleListResponse() == null) {
                 log.warn("[크롤링 응답 비었음]");
