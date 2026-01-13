@@ -1,6 +1,5 @@
 package kr.co.newgyo.article.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;

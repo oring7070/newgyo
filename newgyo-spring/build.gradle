@@ -55,6 +55,9 @@ dependencies {
     implementation("io.github.openfeign.querydsl:querydsl-core:${queryDslVersion}")
     implementation("io.github.openfeign.querydsl:querydsl-jpa:$queryDslVersion")
     annotationProcessor("io.github.openfeign.querydsl:querydsl-apt:$queryDslVersion:jpa")
+
+    // batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 tasks.named('test') {
