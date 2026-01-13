@@ -5,6 +5,7 @@ import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;
 import kr.co.newgyo.article.entity.Article;
 import kr.co.newgyo.article.repository.ArticleRepository;
+import kr.co.newgyo.client.PythonApiClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,12 +23,12 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository repository;
 
-    private final ArticleCrawlerService articleCrawlerService;
+    private final PythonApiClient pythonApiClient;
 
     @Scheduled(fixedDelay = 60 * 60 * 1000) // 1시간
     public void scheduledCrawler() {
         // 파이썬 서버 헬스 체크
-        if (!articleCrawlerService.isHealth()) {
+        if (!pythonApiClient.isHealth()) {
             log.warn("[파이썬 서버 안 떠 있음 - 스킵]");
             return;
         }
@@ -39,7 +40,7 @@ public class ArticleService {
     public void crawler(){
         try {
             // 크롤링 데이터 목록 수신
-            ArticleListResponse listResponse = articleCrawlerService.getCrawler();
+            ArticleListResponse listResponse = pythonApiClient.getCrawler();
 
             if (listResponse == null || listResponse.getArticleListResponse() == null) {
                 log.warn("[크롤링 응답 비었음]");

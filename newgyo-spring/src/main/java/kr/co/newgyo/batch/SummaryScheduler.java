@@ -1,6 +1,6 @@
 package kr.co.newgyo.batch;
 
-import kr.co.newgyo.article.service.ArticleCrawlerService;
+import kr.co.newgyo.client.PythonApiClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,13 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SummaryScheduler {
+    private final PythonApiClient pythonApiClient;
+
     private final JobLauncher jobLauncher;
     private final Job summaryJob;
-    private final ArticleCrawlerService crawlerService;
 
     @Scheduled(fixedDelay = 60 * 60 * 1000)  // 1시간
     public void scheduledSummary() {
-        if (!crawlerService.isHealth()) {
+        if (!pythonApiClient.isHealth()) {
             log.warn("[파이썬 서버 다운 - 스킵]");
             return;
         }
