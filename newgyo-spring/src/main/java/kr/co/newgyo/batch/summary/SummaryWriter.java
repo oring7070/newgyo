@@ -1,4 +1,4 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.summary;
 
 import kr.co.newgyo.article.entity.Article;
 import kr.co.newgyo.article.entity.Summary;
@@ -40,7 +40,7 @@ public class SummaryWriter implements ItemWriter<SummaryResult> {
         if(!articles.isEmpty()){
             articleRepository.saveAll(articles);
             summaryRepository.saveAll(summaries);
-            log.info("[배치 저장 완료] {} ", articles.size());
+            log.info("[Batch] 요약 저장된 기사 수 {} ", articles.size());
         }
     }
 }

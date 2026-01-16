@@ -1,6 +1,7 @@
 package kr.co.newgyo.article.entity;
 
 import jakarta.persistence.*;
+import kr.co.newgyo.article.dto.ArticleResponse;
 import kr.co.newgyo.article.enums.SummaryStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -49,7 +50,24 @@ public class Article {
         this.articleDate = articleDate;
     }
 
-    public void updateSummaryStatus() {
-        this.summaryStatus = SummaryStatus.COMPLETED;
+    public void updateSummaryStatus(SummaryStatus summaryStatus) {
+        this.summaryStatus = summaryStatus;
+    }
+
+    public void rollbackSummaryStatus() {
+        if(this.summaryStatus == SummaryStatus.PROCESSING){
+            this.summaryStatus = SummaryStatus.READY;
+        }
+    }
+
+    public static Article from(ArticleResponse data) {
+        return Article.builder()
+                .title(data.getTitle())
+                .content(data.getContent())
+                .url(data.getUrl())
+                .reporter(String.valueOf(data.getReporters()))
+                .articleDate(data.getDate())
+                .language("Korea")
+                .build();
     }
 }

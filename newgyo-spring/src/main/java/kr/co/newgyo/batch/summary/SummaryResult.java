@@ -1,4 +1,4 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.summary;
 
 import kr.co.newgyo.article.entity.Article;
 import kr.co.newgyo.article.entity.Summary;

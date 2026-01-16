@@ -1,4 +1,4 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.crawler;
 
 import kr.co.newgyo.client.PythonApiClient;
 import lombok.RequiredArgsConstructor;
@@ -12,37 +12,35 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * 기사 요약 배치 실행하는 스케줄러
+ * 기사 크롤링 배치 실행하는 스케줄러
  * */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SummaryScheduler {
+public class CrawlerScheduler {
     private final PythonApiClient pythonApiClient;
 
     private final JobLauncher jobLauncher;
-    private final Job summaryJob;
+    private final Job crawlerJob;
 
-    @Scheduled(fixedDelay = 60 * 60 * 1000)  // 1시간
-    public void scheduledSummary() {
-        if (!pythonApiClient.isHealth()) {
+//    @Scheduled(fixedDelay = 60 * 60 * 1000)
+    public void scheduledCrawler() {
+        if (!pythonApiClient.isHealth()){
             log.warn("[파이썬 서버 다운 - 스킵]");
             return;
         }
 
         try {
-            // 동일 JobInstance 중복 실행 방지
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
 
-            // job 실행
-            JobExecution execution = jobLauncher.run(summaryJob, jobParameters);
+            JobExecution execution = jobLauncher.run(crawlerJob, jobParameters);
 
-            log.info("[Batch 실행 결과] {}", execution.getStatus());
+            log.info("[Crawl Batch 실행 결과] {}", execution.getStatus());
 
         } catch (Exception e) {
-            log.error("[Batch 실행 실패]", e);
+            log.error("[Crawl Batch 실행 실패]", e);
         }
     }
 }
