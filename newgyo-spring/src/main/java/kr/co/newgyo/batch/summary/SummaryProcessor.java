@@ -1,5 +1,6 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.summary;
 
+import kr.co.newgyo.article.enums.SummaryStatus;
 import kr.co.newgyo.client.PythonApiClient;
 import kr.co.newgyo.article.dto.SummaryRequest;
 import kr.co.newgyo.article.dto.SummaryResponse;
@@ -31,6 +32,9 @@ public class SummaryProcessor implements ItemProcessor<Article, SummaryResult> {
                     article.getContent()
             );
 
+            // 기사 상태 processing으로 변경
+            article.updateSummaryStatus(SummaryStatus.PROCESSING);
+
             // AI 요약 서버 호출
             List<SummaryResponse> responses = pythonApiClient.getSummary(List.of(request));
 
@@ -40,8 +44,8 @@ public class SummaryProcessor implements ItemProcessor<Article, SummaryResult> {
 
             SummaryResponse response = responses.getFirst();
 
-            // 기사 상태 변경
-            article.updateSummaryStatus();
+            // 기사 상태 completed로 변경
+            article.updateSummaryStatus(SummaryStatus.COMPLETED);
 
             // 요약 엔티티 생성
             Summary summary = Summary.builder()
@@ -53,8 +57,10 @@ public class SummaryProcessor implements ItemProcessor<Article, SummaryResult> {
             return new SummaryResult(article, summary);
 
         }catch (Exception e) {
+            article.updateSummaryStatus(SummaryStatus.FAILED);
             log.error("[Processing 실패] {}", article.getId(), e);
-            return null;
+
+            throw e;
         }
     }
 }

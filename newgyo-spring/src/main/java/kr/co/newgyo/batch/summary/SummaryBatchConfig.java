@@ -1,4 +1,4 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.summary;
 
 import jakarta.persistence.EntityManagerFactory;
 import kr.co.newgyo.article.entity.Article;
@@ -10,6 +10,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
@@ -29,21 +30,33 @@ public class SummaryBatchConfig {
     private final EntityManagerFactory entityManagerFactory;
     private final SummaryProcessor summaryProcessor;
     private final SummaryWriter summaryWriter;
+    private final SummaryRecoveryTasklet summaryRecoveryTasklet;
 
     @Bean
-    public Job SummaryJob() {
+    public Job summaryJob() {
         return new JobBuilder("summaryJob", jobRepository)
-                .start(SummaryStep())
+                .start(summaryRecoveryStep())   // 복구
+                .next(summaryStep())       // 후 요약
                 .build();
     }
 
     @Bean
-    public Step SummaryStep() {
+    public Step summaryRecoveryStep() {
+        return new StepBuilder("summaryRecoveryStep", jobRepository)
+                .tasklet(summaryRecoveryTasklet, transactionManager)
+                .build();
+    }
+
+    @Bean
+    public Step summaryStep() {
         return new StepBuilder("summaryStep", jobRepository)
                 .<Article, SummaryResult>chunk(5, transactionManager)
                 .reader(summaryReader())
                 .processor(summaryProcessor)
                 .writer(summaryWriter)
+                .faultTolerant()
+                .retry(Exception.class)
+                .retryLimit(2) // 2번 실패 시 step에서 제외
                 .build();
     }
 

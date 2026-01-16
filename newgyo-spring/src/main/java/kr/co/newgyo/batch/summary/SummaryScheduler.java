@@ -1,4 +1,4 @@
-package kr.co.newgyo.batch;
+package kr.co.newgyo.batch.summary;
 
 import kr.co.newgyo.client.PythonApiClient;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class SummaryScheduler {
     private final JobLauncher jobLauncher;
     private final Job summaryJob;
 
-    @Scheduled(fixedDelay = 60 * 60 * 1000)  // 1시간
+//    @Scheduled(fixedDelay = 70 * 60 * 1000)  // 1시간 10분
     public void scheduledSummary() {
         if (!pythonApiClient.isHealth()) {
             log.warn("[파이썬 서버 다운 - 스킵]");
@@ -39,10 +39,10 @@ public class SummaryScheduler {
             // job 실행
             JobExecution execution = jobLauncher.run(summaryJob, jobParameters);
 
-            log.info("[Batch 실행 결과] {}", execution.getStatus());
+            log.info("[Summary Batch 실행 결과] {}", execution.getStatus());
 
         } catch (Exception e) {
-            log.error("[Batch 실행 실패]", e);
+            log.error("[Summary Batch 실행 실패]", e);
         }
     }
 }
