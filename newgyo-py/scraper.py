@@ -13,7 +13,7 @@ async def scrap_news_list():
 
         # 페이지 접근
         try:
-            await page.goto(url, wait_until="networkidle", timeout=10000)
+            await page.goto(url, wait_until="networkidle", timeout=30000)
         except TimeoutError:
             print("페이지 요청 시간 초과")
 
@@ -59,11 +59,14 @@ async def scrap_news_list():
 
             title = news["title"]
 
+            # 카테고리 가져오기
+            category = await page.locator("ul.nav-path01 li").first.locator("a").inner_text()
+
             # 이미지 가져오기
             images = []
             images_elements = page.locator("div.comp-box.photo-group img")
-            
             img_count = await images_elements.count()
+
             for i in range(img_count):
                 img_src = await images_elements.nth(i).get_attribute("src")
                 if(img_src):
@@ -72,15 +75,12 @@ async def scrap_news_list():
                         images.append(img_src)
 
             # 기자 가져오기
-            reporters = []
-            reporters_elements = page.locator("div.writer-zone01 strong.tit-name a")
-            count = await reporters_elements.count()
-            
-            for i in range(count):
-                text = await reporters_elements.nth(i).inner_text()
-                reporter_name = text.replace("기자", "").strip()
-                if(reporter_name):
-                    reporters.append(reporter_name)
+            reporter = None
+            reporter_elements = page.locator("#newsWriterCarousel01 .swiper-slide-active")
+
+            if await reporter_elements.count() > 0:
+                text = await reporter_elements.first.inner_text()
+                reporter = text.replace("기자", "").replace("구독", "").strip()
 
             # 본문 가져오기
             content = await page.locator("div.story-news").inner_text()
@@ -90,13 +90,14 @@ async def scrap_news_list():
             date_element = page.locator("div.update-time p.txt-time01")
             if await date_element.count() > 0:
                 date_text = await date_element.inner_text()
-                date = date_text.strip()
+                date = date_text.replace("송고", "").strip()
 
             # JSON
             news_data = {
                 "title": title,
+                "category": category,
                 "images": images,
-                "reporters": reporters,
+                "reporter": reporter,
                 "content": content,
                 "date": date,
                 "url": url
