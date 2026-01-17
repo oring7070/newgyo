@@ -4,7 +4,9 @@ import jakarta.transaction.Transactional;
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;
 import kr.co.newgyo.article.entity.Article;
+import kr.co.newgyo.article.entity.Keyword;
 import kr.co.newgyo.article.repository.ArticleRepository;
+import kr.co.newgyo.article.repository.KeywordRepository;
 import kr.co.newgyo.client.PythonApiClient;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +22,15 @@ import java.util.List;
 /**
  * 기사 크롤링을 수행 후 신규 기사만 저장
  * 현재는 파이썬에서 기사를 묶음으로 보내주고 있기 때문에 tasklet으로 진행
- * 추후 크롤링도 chunk로 수정
  * */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class CrawlerTasklet implements Tasklet {
     private final PythonApiClient pythonApiClient;
+
     private final ArticleRepository articleRepository;
+    private final KeywordRepository keywordRepository;
 
     @Override
     @Transactional
@@ -49,14 +52,28 @@ public class CrawlerTasklet implements Tasklet {
         int count = 0;
 
         // 크롤링 데이터 디비 저장
-        for (ArticleResponse a : articleList) {
+        for (ArticleResponse data : articleList) {
             // 중복 기사 제외
-            if (articleRepository.existsByUrl(a.getUrl())) {
+            if (articleRepository.existsByUrl(data.getUrl())) {
                 continue;
             }
 
-            Article article = Article.from(a);
+            // 키워드 추출
+            Keyword keyword = keywordRepository.findByName(data.getCategory().strip())
+                    .orElseGet(() -> keywordRepository.findByCode("ETC").orElseThrow());
+
+            Article article = Article.builder()
+                    .title(data.getTitle())
+                    .keyword(keyword)
+                    .content(data.getContent())
+                    .language("KOREA")
+                    .reporter(data.getReporter())
+                    .url(data.getUrl())
+                    .articleDate(data.getDate())
+                    .build();
+
             articleRepository.save(article);
+
             count++;
         }
 

@@ -9,8 +9,9 @@ import java.util.List;
 @ToString
 public class ArticleResponse {
     String title;
+    String category;
     List<String> images;
-    List<String> reporters;
+    String reporter;
     String content;
     String date;
     String url;

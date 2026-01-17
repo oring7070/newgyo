@@ -23,7 +23,7 @@ public class CrawlerScheduler {
     private final JobLauncher jobLauncher;
     private final Job crawlerJob;
 
-//    @Scheduled(fixedDelay = 60 * 60 * 1000)
+    @Scheduled(fixedDelay = 60 * 60 * 1000)
     public void scheduledCrawler() {
         if (!pythonApiClient.isHealth()){
             log.warn("[파이썬 서버 다운 - 스킵]");

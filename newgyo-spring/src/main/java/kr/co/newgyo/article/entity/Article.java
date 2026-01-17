@@ -18,6 +18,7 @@ public class Article {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     @Column(length = 200)
@@ -41,8 +42,9 @@ public class Article {
     private String articleDate;
 
     @Builder
-    public Article(String title, String content, String language, String reporter, String url, String articleDate){
+    public Article(String title, Keyword keyword, String content, String language, String reporter, String url, String articleDate){
         this.title = title;
+        this.keyword = keyword;
         this.content = content;
         this.language = language;
         this.reporter = reporter;
@@ -58,16 +60,5 @@ public class Article {
         if(this.summaryStatus == SummaryStatus.PROCESSING){
             this.summaryStatus = SummaryStatus.READY;
         }
-    }
-
-    public static Article from(ArticleResponse data) {
-        return Article.builder()
-                .title(data.getTitle())
-                .content(data.getContent())
-                .url(data.getUrl())
-                .reporter(String.valueOf(data.getReporters()))
-                .articleDate(data.getDate())
-                .language("Korea")
-                .build();
     }
 }
