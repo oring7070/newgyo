@@ -24,7 +24,7 @@ public class User {
     private Long id;
 
     // null 가능 -> 카카오톡 로그인 없는 사람
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TOKEN_ID")
     private Token token;
 
@@ -57,6 +57,7 @@ public class User {
     }
 
     // 구독 데이터 변경
+    // 편의 메소드 JavaBeans 규약 차이
     public void chSubscribe(Boolean chSub){
         this.isSubscribed = chSub;
     }

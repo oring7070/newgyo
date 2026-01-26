@@ -68,7 +68,7 @@ public class KakaoService {
         KakaoUserInfo user = getUserInfo(response.getAccessToken());
 
         // 카카오 정보 저장 유저 정보 리프레쉬 토큰
-        savaKakaoUser(user,response.getRefreshToken());
+        savaKakaoUser(user,response.getAccessToken());
 
         // 웹 전용 아이디로 회원가입 하면 바뀔게 많을듯..
 
@@ -120,7 +120,6 @@ public class KakaoService {
         // 카카오 정보 가져와서 저장
         User user  = User.builder()
                 .username(userInfo.getEmail())
-                .password(null)
                 .role(Role.USER)
                 .isSubscribed(false)
                 .provider(LoginProvider.KAKAO)

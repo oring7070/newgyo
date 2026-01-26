@@ -2,7 +2,6 @@ package kr.co.newgyo.user.repository;
 
 
 import kr.co.newgyo.user.entity.User;
-import kr.co.newgyo.user.enums.LoginProvider;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,5 +12,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
 
     User findByUsername(String username);
 
-    List<User> findByProvider(LoginProvider provider);
+    User findById(Long tokenId);
+
+    // 구독 데이터로 판단
+    List<User> findByIsSubscribed(boolean bool);
 }

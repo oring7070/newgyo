@@ -20,13 +20,16 @@ public class UserKeyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 중복 방지를 위해
+    // @UniqueConstraint 또는 uniqueConstraints를 추가
+
     //user와 매핑 단방향
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="USER_ID")
     private User user;
 
     //keyword와 매핑 단방향
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="KEYWORD_ID")
     private Keyword keyword;
 
