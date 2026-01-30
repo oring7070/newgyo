@@ -41,6 +41,8 @@ public class Article {
 
     private String articleDate;
 
+    private Long viewCount;
+
     @Builder
     public Article(String title, Keyword keyword, String content, String language, String reporter, String url, String articleDate){
         this.title = title;

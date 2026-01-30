@@ -1,27 +1,24 @@
 package kr.co.newgyo.home.controller;
 
-import kr.co.newgyo.article.service.ArticleDetailService;
+import kr.co.newgyo.article.service.ArticleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.swing.plaf.PanelUI;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
+@RequiredArgsConstructor
 public class HomeController {
 
-    ArticleDetailService articleDetailService;
-
-    public HomeController(ArticleDetailService articleDetailService) {
-        this.articleDetailService = articleDetailService;
-    }
+    private final ArticleService articleService;
 
     @GetMapping
-    public String home(Model model){
-        // 주요 뉴스 (카테고리별로 안바뀌는 가정하에)
-        model.addAttribute("article", articleDetailService.homeArticleData());
+    public String home(@RequestParam(required = false) Long categoryId,
+                       Model model){
+        model.addAttribute("article", articleService.home(categoryId));
         return "home";
     }
 }
