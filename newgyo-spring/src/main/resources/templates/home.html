@@ -18,11 +18,9 @@
             <span class="section-icon">🔥</span>
             <span class="section-title">주요 뉴스</span>
         </div>
-        <div class="main-news" th:data-id="${article.id}">
-<!--            메인뉴스 클릭시 id 와 함께 상세페이지로 이동-->
-<!--            데이터를 불러올 때 id 가 포함되어 있어야 한다-->
+        <div class="main-news" th:data-id="${article.mainNews.id}">
             <div>
-                <img th:src="${article.url}" alt="뉴스 이미지" class="news-image">
+                <img th:src="@{/images/test.jpg}" alt="뉴스 이미지" class="news-image">
             </div>
             <div class="news-content">
                 <div class="news-source">
@@ -30,13 +28,37 @@
                     <span>MBC 뉴스</span>
                 </div>
                 <div class="news-title">
-                    <p th:text="${article.title}"></p>
+                    <p th:text="${article.mainNews.title}"></p>
                 </div>
                 <div class="news-meta">
                     <div class="news-actions">
                         <div class="action-icon">📋</div>
                         <div class="action-icon">⋮</div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 인기 뉴스 섹션 -->
+        <div class="section-header">
+            <span class="section-icon">📈</span>
+            <span class="section-title">인기 뉴스</span>
+        </div>
+        <div class="section-subtitle">오늘의 인기 뉴스를 확인해 보세요.</div>
+
+        <div class="small-news-item"
+            th:each="news: ${article.hotNews}"
+            th:data-id="${news.id}">
+            <img class="small-news-image" th:src="@{/images/test.jpg}" alt="뉴스 이미지">
+            <div class="small-news-content">
+                <div>
+                    <span class="small-news-category" th:text="${news.category}"></span>
+                    <div class="small-news-title"
+                        th:text="${news.title}">
+                    </div>
+                </div>
+                <div class="small-news-meta">
+                    <span th:text="${news.date}"></span>
                 </div>
             </div>
         </div>
@@ -70,28 +92,6 @@
             </div>
         </div>
 
-        <!-- 인기 뉴스 섹션 -->
-        <div class="section-header">
-            <span class="section-icon">📈</span>
-            <span class="section-title">인기 뉴스</span>
-        </div>
-        <div class="section-subtitle">오늘의 경제 분야에서 인기 뉴스를 확인해 보세요.</div>
-
-        <div class="small-news-item">
-            <img class="small-news-image" th:src="@{/images/test.jpg}" alt="뉴스 이미지">
-            <div class="small-news-content">
-                <div>
-                    <span class="small-news-category">조선비즈</span>
-                    <div class="small-news-title">
-                        '창업 70주년' 삼성, 초격차 혁신 발판
-                    </div>
-                </div>
-                <div class="small-news-meta">
-                    <span>조선비즈 · 2023. 4. 6.</span>
-                </div>
-            </div>
-        </div>
-
         <!-- 카테고리별 뉴스 섹션 -->
         <div class="section-header">
             <span class="section-icon">📰</span>
@@ -99,17 +99,18 @@
         </div>
         <div class="section-subtitle">오늘의 카테고리별 뉴스를 확인해 보세요.</div>
 
-        <div class="small-news-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect fill='%2300d2ff' width='120' height='120'/%3E%3C/svg%3E" alt="뉴스" class="small-news-image">
+        <div class="small-news-item"
+            th:each="news: ${article.categoryNews}"
+            th:data-id="${news.id}">
+            <img th:src="@{/images/test.jpg}" alt="뉴스" class="small-news-image">
             <div class="small-news-content">
                 <div>
-                    <span class="small-news-category">머니투데이</span>
-                    <div class="small-news-title">
-                        농협 수협 진북은행 "토론증권 생태계 구축" 목적다
+                    <span class="small-news-category" th:text="${news.category}"></span>
+                    <div class="small-news-title" th:text="${news.title}">
                     </div>
                 </div>
                 <div class="small-news-meta">
-                    <span>머니투데이 · 2023. 4. 6.</span>
+                    <span th:text="${news.date}"></span>
                 </div>
             </div>
         </div>
@@ -121,7 +122,7 @@
             newsItem.addEventListener('click', function() {
                 const id = this.dataset.id;
                 if (id) {
-                    location.href = `/article/detail/${id}`;
+                    location.href = `/article/${id}`;
                 }
             });
         });
