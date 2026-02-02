@@ -9,6 +9,7 @@ import java.util.List;
 
 @Getter
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class ArticleResponse {
     Long id;

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>articleDetail</title>
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/article-detail.css}">
+</head>
+<body>
+<div class="container">
+    <div th:replace="header"></div>
+    <div th:replace="chatIcon"></div>
+
+    <div class="content">
+        <div class="detail-card">
+            <!-- 제목 -->
+            <div class="section">
+                <h1 class="title" th:text="${article.title}"></h1>
+            </div>
+
+            <!-- 이미지 -->
+            <div class="section image-section">
+                <div class="image-container">
+                    <img th:src="${article.url}" alt="뉴스 사진">
+                </div>
+            </div>
+
+            <!-- AI 요약 -->
+            <div class="section">
+                <h2 class="section-title">AI 요약</h2>
+                <div class="ai-summary">
+                    <p th:text="${article.summary} ? 'AI 요약 중입니다.'"></p>
+                </div>
+            </div>
+
+            <!-- 본문 글 -->
+            <div class="section">
+                <h2 class="section-title">상세 내용</h2>
+                <div class="section-content">
+                    <p th:text="${article.content}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
