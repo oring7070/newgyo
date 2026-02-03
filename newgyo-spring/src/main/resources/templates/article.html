@@ -9,7 +9,8 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="header"></div>
+    <div th:replace="~{header}"></div>
+    <div th:replace="~{chatIcon}"></div>
 
     <!-- 카테고리 네비 섹션 -->
     <div class="content">
@@ -49,5 +50,6 @@
 
     </div>
 </div>
+<script src="/js/article.js"></script>
 </body>
 </html>
