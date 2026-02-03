@@ -9,8 +9,8 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="header"></div>
-    <div th:replace="chatIcon"></div>
+    <div th:replace="~{header}"></div>
+    <div th:replace="~{chatIcon}"></div>
 
     <div class="content">
         <!-- 메인 뉴스 -->
@@ -76,18 +76,22 @@
             <div class="filter-row">
                 <span class="filter-label">카테고리</span>
                 <div class="filter-buttons">
-                    <button class="filter-btn active">전체</button>
-                    <button class="filter-btn">경제</button>
-                    <button class="filter-btn">IT</button>
-                    <button class="filter-btn">정치</button>
-                    <button class="filter-btn">사회</button>
+                    <a th:href="@{/sort={s}(s=${sort})}"
+                       th:class="${categoryId == null ? 'filter-btn active' : 'filter-btn'}">전체</a>
+                    <a th:each="category : ${category}"
+                       th:href="@{/?categoryId={c}&sort={s}(c=${category.id}, s=${sort})}"
+                       th:class="${categoryId != null and categoryId == category.id ? 'filter-btn active' : 'filter-btn'}"
+                       th:text="${category.name}">
+                    </a>
                 </div>
             </div>
             <div class="filter-row">
                 <span class="filter-label">정렬</span>
                 <div class="filter-buttons">
-                    <button class="filter-btn active">인기순</button>
-                    <button class="filter-btn">최신순</button>
+                    <a th:href="@{/?categoryId={c}&sort=popular(c=${categoryId})}"
+                       th:class="${sort == 'popular' ? 'filter-btn active' : 'filter-btn'}">인기순</a>
+                    <a th:href="@{/?categoryId={c}&sort=latest(c=${categoryId})}"
+                       th:class="${sort == 'latest' ? 'filter-btn active' : 'filter-btn'}">최신순</a>
                 </div>
             </div>
         </div>
@@ -116,17 +120,6 @@
         </div>
     </div>
 </div>
-<script>
-        // .main-news 요소를 클릭했을 때 상세페이지로 이동
-        document.querySelectorAll('.main-news').forEach(function(newsItem) {
-            newsItem.addEventListener('click', function() {
-                const id = this.dataset.id;
-                if (id) {
-                    location.href = `/article/${id}`;
-                }
-            });
-        });
-        // 페이지 불러올때 데이터 id를 노드에 추가하는 js 가 필요할듯 함
-</script>
+<script src="/js/article.js"></script>
 </body>
 </html>

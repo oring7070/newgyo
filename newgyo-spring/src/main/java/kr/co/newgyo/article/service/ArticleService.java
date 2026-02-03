@@ -4,26 +4,30 @@ import kr.co.newgyo.article.dto.ArticleDetailResponse;
 import kr.co.newgyo.article.dto.ArticleListResponse;
 import kr.co.newgyo.article.dto.ArticleResponse;
 import kr.co.newgyo.article.entity.Article;
+import kr.co.newgyo.article.entity.Keyword;
 import kr.co.newgyo.article.entity.Summary;
 import kr.co.newgyo.article.repository.ArticleRepository;
+import kr.co.newgyo.article.repository.KeywordRepository;
 import kr.co.newgyo.article.repository.SummaryRepository;
 import kr.co.newgyo.home.dto.HomeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository repository;
-    private final SummaryRepository summaryRepository;
 
-    public HomeResponse home(Long categoryId){
+    private final SummaryRepository summaryRepository;
+    private final KeywordRepository keywordRepository;
+
+    public HomeResponse home(Long categoryId, String sort){
         // 주요 뉴스
         Article main = repository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> new IllegalArgumentException("기사 없음"));
@@ -31,10 +35,17 @@ public class ArticleService {
         // 인기 뉴스 3개
         List<Article> hot = repository.findTop3ByOrderByViewCountDesc();
 
+        // 인기순, 최신순
+        Sort sorting = sort.equals("latest")
+                ? Sort.by(Sort.Direction.DESC, "articleDate")
+                : Sort.by(Sort.Direction.DESC, "viewCount");
+
         // 각 카테고리 별 3개
         List<Article> category = (categoryId == null)
-                ? repository.findTop3ByOrderByIdDesc()
-                : repository.findTop3ByKeywordIdOrderByIdDesc(categoryId);
+                ? repository.findTop3ByOrderByIdDesc(sorting)
+                : repository.findTop3ByKeywordIdOrderByIdDesc(categoryId, sorting);
+//                ? repository.findTop3(sorting)
+//                : repository.findTop3ByKeywordId(categoryId, sorting);
 
         // Article -> ArticleResponse 변환
         ArticleResponse mainNews = toResponse(main);
@@ -52,7 +63,7 @@ public class ArticleService {
         return new HomeResponse(mainNews, hotNews, categoryNews);
     }
 
-    public ArticleListResponse findDomesticArticles(Long categoryId){
+    public ArticleListResponse getDomesticArticles(Long categoryId){
         List<ArticleResponse> categoryList = new ArrayList<>();
 
         List<Article> category = (categoryId == null)
@@ -66,7 +77,7 @@ public class ArticleService {
         return new ArticleListResponse(categoryList, category.size());
     }
 
-    public ArticleDetailResponse findArticleById(Long id){
+    public ArticleDetailResponse getArticleById(Long id){
         // 기사 찾기
         Article article = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("기사 없음"));
@@ -79,6 +90,10 @@ public class ArticleService {
         String summaryText = summary != null ? summary.getSummary() : "";
 
         return new ArticleDetailResponse(toResponse(article), article.getSummaryStatus(), summaryText);
+    }
+
+    public List<Keyword> getAllCategory(){
+        return keywordRepository.findAll();
     }
 
     private ArticleResponse toResponse(Article article) {
