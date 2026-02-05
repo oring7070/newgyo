@@ -1,0 +1,21 @@
+# Gradle
+.gradle
+build
+
+# VCS
+.git
+.gitignore
+
+# IDE
+.idea
+*.iml
+
+# Logs / Env
+*.log
+.env
+
+# Docs / CI
+README.md
+docs/
+.github/
+Jenkinsfile
