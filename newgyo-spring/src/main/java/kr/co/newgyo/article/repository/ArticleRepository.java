@@ -2,6 +2,7 @@ package kr.co.newgyo.article.repository;
 
 import kr.co.newgyo.article.entity.Article;
 import kr.co.newgyo.article.enums.SummaryStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,8 +16,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Optional<Article> findTopByOrderByIdDesc();
     List<Article> findTop3ByOrderByViewCountDesc();
-    List<Article> findTop3ByOrderByIdDesc();
-    List<Article> findTop3ByKeywordIdOrderByIdDesc(Long keywordId);
+    List<Article> findTop3ByOrderByIdDesc(Sort sorting);
+    List<Article> findTop3ByKeywordIdOrderByIdDesc(Long keywordId, Sort sorting);
+
+//    List<Article> findTop3(Sort sorting);
+//    List<Article> findTop3ByKeywordId(Long keywordId, Sort sorting);
 
     // 전체 키워드별 기사
     List<Article> findByKeywordIdIn(Set<Long> keywordIds);

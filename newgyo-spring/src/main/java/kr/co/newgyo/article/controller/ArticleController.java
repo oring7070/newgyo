@@ -18,13 +18,18 @@ public class ArticleController {
     // 국내 뉴스 list
     @GetMapping("/domestic")
     public String domestic(@RequestParam(required = false) Long categoryId, Model model){
-        model.addAttribute("domestic", service.findDomesticArticles(categoryId));
+        model.addAttribute("domestic", service.getDomesticArticles(categoryId));
+
+        // 카테고리 필터
+        model.addAttribute("category", service.getAllCategory());
+        model.addAttribute("categoryId", categoryId);
+
         return "article";
     }
 
     // 해외 뉴스 list
     @GetMapping("/international")
-    public String international(@PathVariable(required = false) Long categoryId, Model model){
+    public String international(@RequestParam(required = false) Long categoryId, Model model){
         model.addAttribute("international", null);
         return "article";
     }
@@ -32,7 +37,7 @@ public class ArticleController {
     // 상세 페이지
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model){
-        model.addAttribute("article", service.findArticleById(id));
+        model.addAttribute("article", service.getArticleById(id));
         return "article-detail";
     }
 }

@@ -9,23 +9,21 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="header"></div>
+    <div th:replace="~{header}"></div>
+    <div th:replace="~{chatIcon}"></div>
 
     <!-- 카테고리 네비 섹션 -->
     <div class="content">
         <nav class="navbar">
             <ul class="nav-list">
                 <li class="nav-item">
-                    <button class="nav-link active">전체</button>
+                    <a th:href="@{/article/domestic}"
+                       th:class="${categoryId == null ? 'nav-link active' : 'nav-link'}">전체</a>
                 </li>
-                <li class="nav-item">
-                    <button class="nav-link">경제</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link">IT</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link">정치</button>
+                <li th:each="category : ${category}" class="nav-item">
+                    <a th:href="@{/article/domestic?categoryId={c}(c=${category.id})}"
+                       th:class="${categoryId != null and categoryId == category.id ? 'nav-link active' : 'nav-link'}"
+                       th:text="${category.name}"></a>
                 </li>
             </ul>
         </nav>
@@ -49,5 +47,6 @@
 
     </div>
 </div>
+<script src="/js/article.js"></script>
 </body>
 </html>
