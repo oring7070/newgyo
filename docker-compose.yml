@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: newgyo-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+# Spring Boot Application
+  spring:
+    build:
+      context: ./newgyo-spring
+    image: newgyo-spring-app
+    container_name: newgyo-spring
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DB_NAME: ${SPRING_DB_NAME}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      PASSPHRASE: ${PASSPHRASE}
+      SALT: ${SALT}
+      SERVER_ADDRESS: 0.0.0.0
+
+# TODO: Python Application
+
+
+networks:
+  newgyo-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
