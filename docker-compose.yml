@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mysql:
-    image: yul554/newgyo-mysql:latest
+    image: mysql:8.0
     container_name: newgyo-mysql
     restart: always
     environment:
