@@ -73,6 +73,16 @@ public class WebSecurityConfig {
         );
 
         http.authorizeHttpRequests(auth -> auth
+                        // 정적 리소스
+                        .requestMatchers(
+                                "/**/*.html",
+                                "/**/*.css",
+                                "/**/*.js",
+                                "/**/*.png",
+                                "/**/*.jpg",
+                                "/**/*.ico",
+                                "/webjars/**"
+                        ).permitAll()
                         // 인증 없이 접근 가능한 API
                         .requestMatchers(
                                 "/",
