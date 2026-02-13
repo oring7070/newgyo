@@ -37,6 +37,7 @@ services:
       PASSPHRASE: ${PASSPHRASE}
       SALT: ${SALT}
       SERVER_ADDRESS: 0.0.0.0
+      PYTHON_HOST: ${PYTHON_HOST}
     restart: on-failure
 
 # Python Application
