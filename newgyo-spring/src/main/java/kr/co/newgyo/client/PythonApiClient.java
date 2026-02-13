@@ -6,6 +6,7 @@ import kr.co.newgyo.article.dto.SummaryRequest;
 import kr.co.newgyo.article.dto.SummaryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,12 +24,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PythonApiClient {
     private final WebClient webClient;
+    @Value("${app.chat.key}")
+    private String hostName;
+
 
     // 헬스체크
     public boolean isHealth() {
         try {
             HealthResponse response = webClient.get()
-                    .uri("/api/health")
+                    .uri(hostName + "/api/health")
                     .retrieve()
                     .bodyToMono(HealthResponse.class)
                     .block();
@@ -45,7 +49,7 @@ public class PythonApiClient {
     public ArticleListResponse getCrawler(){
         try {
             ArticleListResponse response = webClient.post()
-                    .uri("/api/articles")
+                    .uri(hostName + "/api/articles")
                     .retrieve()
                     .bodyToMono(ArticleListResponse.class)
                     .block();
@@ -63,7 +67,7 @@ public class PythonApiClient {
     public List<SummaryResponse> getSummary(List<SummaryRequest> summary){
         try{
             List<SummaryResponse> response = webClient.post()
-                    .uri("/api/summary")
+                    .uri(hostName + "/api/summary")
                     .bodyValue(summary)
                     .retrieve()
                     .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, clientResponse -> {

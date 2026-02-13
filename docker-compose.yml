@@ -37,9 +37,21 @@ services:
       PASSPHRASE: ${PASSPHRASE}
       SALT: ${SALT}
       SERVER_ADDRESS: 0.0.0.0
+    restart: on-failure
 
 # TODO: Python Application
-
+  python:
+    build:
+      context: ./newgyo-py        # 파이썬 Dockerfile이 있는 경로
+    image: newgyo-python          # 빌드 후 생성될 이미지 이름
+    container_name: newgyo-python-srv
+    ports:
+      - "8000:8000"               # [내 컴퓨터]:[컨테이너 내부]
+    environment:
+        CHAT_KEY: ${PYTHON_HOST}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        SERVER_ADDRESS: 0.0.0.0
+    restart: always
 
 networks:
   newgyo-network:

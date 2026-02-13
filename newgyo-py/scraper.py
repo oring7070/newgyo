@@ -5,7 +5,7 @@ import asyncio
 async def scrap_news_list():
     async with async_playwright() as p:
         # 브라우저 띄우기
-        browser = await p.chromium.launch(headless=False, slow_mo=20)
+        browser = await p.chromium.launch(headless=True, slow_mo=20)
         page = await browser.new_page()
 
         url = "https://www.yna.co.kr/"

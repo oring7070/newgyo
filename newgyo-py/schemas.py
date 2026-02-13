@@ -9,5 +9,6 @@ class SummaryResponse(BaseModel):
     summary: str
 
 class ChatRequest(BaseModel):
+    sender: str = "User" 
     content: str
-    sender: str = "User"    
+       
